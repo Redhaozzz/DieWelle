@@ -200,6 +200,39 @@ class AudioService {
       osc.stop(t + 0.1);
     }
   }
+
+  public async playVictory() {
+      if (!this.ctx) await this.initCtx();
+      if (this.ctx!.state !== 'running' || !this.sfxGain) return;
+      const t = this.ctx!.currentTime;
+      
+      // Firework Sound (Noise Burst)
+      const bufferSize = this.ctx.sampleRate * 1.5; // 1.5 seconds
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Fill with white noise
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const gain = this.ctx.createGain();
+      
+      // Envelope: Pop -> Decay
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.5, t + 0.05); // Attack
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 1.0); // Decay
+
+      noise.connect(gain);
+      gain.connect(this.sfxGain!);
+      
+      noise.start(t);
+      // No stop needed really, buffer ends, but good practice
+      noise.stop(t + 1.5);
+  }
 }
 
 export const audioService = new AudioService();

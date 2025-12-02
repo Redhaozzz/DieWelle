@@ -1,4 +1,5 @@
 
+
 import { NPCState } from './types';
 
 // Map Dimensions
@@ -6,6 +7,14 @@ export const VIEWPORT_WIDTH = 800;
 export const VIEWPORT_HEIGHT = 480;
 export const WORLD_WIDTH = 800;
 export const WORLD_HEIGHT = 480;
+
+// Level 4 (Large Map)
+export const LEVEL_4_WIDTH = 1200;
+export const LEVEL_4_HEIGHT = 720;
+
+// Level 5 (River Map)
+export const LEVEL_5_WIDTH = 800;
+export const LEVEL_5_HEIGHT = 960;
 
 // Colors
 export const COLORS = {
@@ -25,6 +34,8 @@ export const COLORS = {
   Enemy: '#ef4444', // Red Leader
   Background: '#0f172a',
   Grid: '#1e293b',
+  Wall: '#334155', // Slate-700
+  River: '#0ea5e9', // Sky-500
 };
 
 // State Colors Mapping (For UI/Minimap)
@@ -45,6 +56,9 @@ export const CONFIG = {
   ENEMY_SPEED: 110, // Significantly slower
   NPC_BASE_SPEED: 80,
   
+  // Physics / Collision
+  NPC_MIN_SEPARATION: 25, // Minimum distance between NPC centers to prevent overlap
+
   PLAYER_AOE_RADIUS: 200, 
   PLAYER_AOE_CD: 3, 
   PLAYER_BEAM_RANGE: 200, // Reduced slightly to balance with Believer range
@@ -54,6 +68,7 @@ export const CONFIG = {
   ENEMY_AOE_RADIUS: 100, // Smaller than player
   ENEMY_AOE_CD: 8, // Less frequent
   ENEMY_BEAM_RANGE: 100, // Shorter range
+  ENEMY_LEADER_HP: 2000, // Boss HP
 
   // Progress needed to advance state
   PROGRESS_TO_PERSUADED: 100,
@@ -72,6 +87,12 @@ export const CONFIG = {
   RATE_BELIEVER: 15,
   RATE_CHASE_CONVERT: 50, // Damage per "headbutt" (Instant damage)
   
+  // Opinion Leader Stats
+  OPINION_LEADER_RADIUS: 15,
+  OPINION_LEADER_WAVE_RADIUS: 100, // 50% of Player's 200
+  OPINION_LEADER_WAVE_CD: 12.0,
+  OPINION_LEADER_POWER_MULT: 2.0, // 100% stronger
+
   // Attack Animation Timings (Seconds) - Made slower for visibility
   ATTACK_WINDUP: 0.4,
   ATTACK_STRIKE: 0.15,
@@ -99,7 +120,14 @@ export const CONFIG = {
   DEBATE_SUPPORT_RADIUS: 40, // Distance supporters stand behind leader
   LEADER_DEBATE_WEIGHT: 3, // Leader counts as 3 supporters
   
+  // Total War / Siege
+  TOTAL_WAR_THRESHOLD: 0.8, // 80% Believers triggers total war
+  SIEGE_DAMAGE_TICK: 20,
+  
   // Debate UI
   DEBATE_BAR_WIDTH: 40,
   DEBATE_BAR_HEIGHT: 6,
+
+  // Portal
+  PORTAL_COOLDOWN: 2.0,
 };

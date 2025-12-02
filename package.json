@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "build": "^0.1.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "recharts": "^3.5.1"

@@ -24,6 +24,23 @@ export interface Entity {
   radius: number;
 }
 
+export interface Wall {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface Portal {
+  id: string;
+  position: Vector;
+  targetPosition: Vector; // Where it sends you
+  radius: number;
+  cooldown: number;
+  maxCooldown: number;
+  pairId: string; // ID of the linked portal (to sync CD if needed, or visual connection)
+}
+
 export interface ActiveWave {
   id: string;
   center: Vector;
@@ -36,9 +53,11 @@ export interface ActiveWave {
 
 export interface NPC extends Entity {
   state: NPCState;
+  role: 'standard' | 'opinion_leader'; // New Role
   homeCenter: Vector;
   homeRadius: number;
   wanderTarget: Vector;
+  wanderBounds?: { x: number, y: number, width: number, height: number }; // Constraint for islands
   moveSpeed: number;
   
   // Aware Logic
@@ -56,6 +75,9 @@ export interface NPC extends Entity {
   believerBeamCooldown: number;
   beamTargetId: string | null;
   
+  // Opinion Leader Logic
+  opinionWaveTimer: number;
+
   // --- ADVERSARIAL LOGIC ---
   
   // Debate Logic (Believer vs Believer)
@@ -76,6 +98,7 @@ export interface Player extends Entity {
   aoeRadius: number;
   beamRange: number;
   beamTargetId: string | null;
+  activeDebateId: string | null; // The ID of the NPC center this leader is currently supporting
 }
 
 export interface Enemy extends Entity {
@@ -91,6 +114,12 @@ export interface Enemy extends Entity {
   chaseTargetId: string | null; // New: Who are we focusing on?
   targetPos: Vector;
   state: 'wandering' | 'chasing_cluster' | 'converting';
+  activeDebateId: string | null; // The ID of the NPC center this leader is currently supporting
+  
+  // Boss Stats
+  hp: number;
+  maxHp: number;
+  isDead: boolean;
 }
 
 export interface GameStats {
@@ -100,6 +129,7 @@ export interface GameStats {
   believerA: number;
   believerB: number;
   timeElapsed: number;
+  enemyLeaderDead: boolean; // Victory condition for boss levels
 }
 
 export enum TimeScale {
@@ -114,7 +144,7 @@ export interface Particle {
   position: Vector;
   life: number;
   maxLife: number;
-  type: 'beam_spark' | 'convert_effect' | 'help_ring_small' | 'help_ring_big' | 'cleansing_shockwave' | 'hit_impact'; 
+  type: 'beam_spark' | 'convert_effect' | 'help_ring_small' | 'help_ring_big' | 'cleansing_shockwave' | 'hit_impact' | 'leader_death' | 'teleport'; 
   size: number;
   color: string;
 }
